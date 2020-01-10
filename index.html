@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="/app/assets/main.65c2977b56380073c806.css" rel="stylesheet"></head>
+  <link href="/app/assets/main.09e8197aa6b9f26e360d.css" rel="stylesheet"></head>
 
 
 
@@ -130,7 +130,7 @@
   	    <div class="content column is-6 is-offset-3">
 
 
-          <div id="nametag-input" class="main-text box" v-cloak    >
+          <div id="create-invoice-input" class="main-text box" v-cloak    >
 
 
           <div class="whitespace-md"></div>
@@ -138,29 +138,50 @@
 
           <div class="columns">
             <div class="column">
-               <h4 class=" is-size-4 is-4 is-spaced  " >Create an Invoice</h4>
+               <h4 class=" is-size-4 is-4 is-spaced">Create an Invoice</h4>
             </div>
-            <div class="column">
+            <!-- <div class="column">
               <div class="pull-right" v-if='showAvailability' v-cloak>
                 <span class="tag is-success" v-if='nametagAvailable'>Available</span>
                 <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
               </div>
-            </div>
+            </div> -->
           </div>
 
 
+          <div class="field">
+            <label class="label"> Recipient Address </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='recipientAddress'>
+            </div>
+           </div>
+
+          <div class="field">
+            <label class="label"> Token Address </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAddress'>
+            </div>
+           </div>
+
 
            <div class="field">
-             <label class="label"> </label>
+             <label class="label"> Tokens Amount Due </label>
              <div class="control">
-               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='inputName'>
+               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAmount'>
              </div>
             </div>
+
+            <div class="field">
+              <label class="label"> Description Note </label>
+              <div class="control">
+                <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='description'>
+              </div>
+             </div>
 
 
 
             <div class="pull-right">
-              <div   class="button is-large" v-on:click='onSubmitNewInvoice'>
+              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
                 <span class=" ">
                   <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
@@ -172,7 +193,66 @@
     	      </div>
 
   	    </div>
+
+
+
       </div>
+
+
+
+
+      <div class="columns">
+
+        <div class="content column is-6 is-offset-3">
+
+
+          <div id="pay-invoice-input" class="main-text box" v-cloak    >
+
+
+          <div class="whitespace-md"></div>
+
+
+          <div class="columns">
+            <div class="column">
+               <h4 class=" is-size-4 is-4 is-spaced">Pay Invoice</h4>
+            </div>
+            <!-- <div class="column">
+              <div class="pull-right" v-if='showAvailability' v-cloak>
+                <span class="tag is-success" v-if='nametagAvailable'>Available</span>
+                <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
+              </div>
+            </div> -->
+          </div>
+
+
+          <div class="field">
+            <label class="label"> Invoice ID </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='invoiceUUID'>
+            </div>
+           </div>
+
+
+
+            <div class="pull-right">
+              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
+                <span class=" ">
+                  <i class="fab fa-ethereum" style="margin-right:1em"></i>
+                </span>
+                <span> Submit </span>
+              </div>
+            </div>
+
+
+            </div>
+
+        </div>
+
+
+      </div>
+
+
+
 
 	  </div>
 	</div>
@@ -272,5 +352,5 @@
 
 
 
-  <script type="text/javascript" src="/main.65c2977b56380073c806.js"></script></body>
+  <script type="text/javascript" src="/main.09e8197aa6b9f26e360d.js"></script></body>
 </html>

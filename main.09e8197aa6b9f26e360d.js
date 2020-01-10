@@ -30299,7 +30299,7 @@ module.exports = class ContractInterface {
   static getPaySpecContract(web3, env) //not a func ?s  Why not.
   {
     //  return new web3.eth.Contract(lavaContractJSON.abi,ContractInterface.getLavaContractAddress(env))
-    return web3.eth.contract(paySpec.abi).at(ContractInterface.getPaySpecAddress(env));
+    return web3.eth.contract(paySpecJSON.abi).at(ContractInterface.getPaySpecAddress(env));
   }
 
   /*  static getLavaContract(web3,env)  //not a func ?s  Why not.
@@ -32954,11 +32954,8 @@ const ContractInterface = __webpack_require__(65);
 var app;
 var dashboardData;
 
-var nametagInput;
-var namesList;
-
-var recentNamesList;
-var personalNamesList;
+var createInvoiceInput;
+var payInvoiceInput;
 
 var tokenIdQuery;
 var tokenNameQuery;
@@ -32974,16 +32971,19 @@ class HomeRenderer {
     var self = this;
     ethereumHelper = ethHelper;
 
-    nametagInput = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-      el: '#nametag-input',
+    createInvoiceInput = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
+      el: '#create-invoice-input',
       data: {
-        inputName: '',
-        showAvailability: false,
+        recipientAddress: '',
+        tokenAddress: '',
+        tokenAmount: '',
+        description: '',
+        web3connected: false,
         nametagAvailable: true
       },
       methods: {
         keyUp: function (event) {
-          __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(nametagInput, 'showAvailability', false);
+          //Vue.set(createInvoiceInput, 'showAvailability', false)
         },
         inputChange: function (event) {
           console.log('input change', this.inputName, event);
@@ -32991,16 +32991,58 @@ class HomeRenderer {
           //  self.checkNameAvailability( this.inputName );
         },
         onSubmitNewInvoice: function (event) {
-          console.log('submit new invoice ');
+          console.log('submit new invoice ', this.recipientAddress);
           //self.claimName( this.inputName )
+
+
+          var newInvoiceData = {
+            recipientAddress: this.recipientAddress,
+            tokenAddress: this.tokenAddress,
+            tokenAmount: this.tokenAmount,
+            description: this.description,
+            nonce: 0,
+            blockExpiresAt: 0
+          };
+
+          self.createNewInvoice(newInvoiceData);
+        }
+      }
+    });
+
+    payInvoiceInput = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
+      el: '#pay-invoice-input',
+      data: {
+        invoiceUUID: '',
+
+        web3connected: false
+      },
+      methods: {
+        keyUp: function (event) {
+          //Vue.set(createInvoiceInput, 'showAvailability', false)
+        },
+        inputChange: function (event) {
+          console.log('input change', this.inputName, event);
+
+          //  self.checkNameAvailability( this.inputName );
+        },
+        onSubmitNewInvoice: function (event) {
+          console.log('pay invoice ', this.invoiceUUID);
+          //self.claimName( this.inputName )
+
+
+          self.payInvoice(this.invoiceUUID);
         }
       }
     });
   }
 
-  async onWeb3Connected() {
+  async onWeb3Connected() //from eth helper callback
+  {
     var self = this;
     console.log('on web3 connected');
+
+    __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(createInvoiceInput, 'web3connected', true);
+    __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(payInvoiceInput, 'web3connected', true);
 
     tokenIdQuery = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
       el: '#tokenIdQuery',
@@ -33042,37 +33084,65 @@ class HomeRenderer {
       }
     });
 
-    recentNamesList = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-      el: '#recentnameslist',
-      data: {
-        list: []
-      }
-    });
-
-    personalNamesList = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-      el: '#personalnameslist',
-      data: {
-        list: []
-      }
-    });
-
     //self.updateRecentNamesList()
     //self.updatePersonalNamesList()
 
     //setInterval(function(){ self.updateRecentNamesList()   },24 * 1000)
 
   }
-  async createNewInvoice() {
+  async createNewInvoice(newInvoiceData) {
+
+    console.log('create new invoice ', newInvoiceData.description, newInvoiceData.nonce, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress, newInvoiceData.blockExpiresAt);
+
     var web3 = ethereumHelper.getWeb3Instance();
 
-    var env = 'mainnet';
+    var env = ethereumHelper.getEnvironmentName();
+
+    console.log('env ', env);
 
     var connectedAddress = ethereumHelper.getConnectedAccountAddress();
 
-    var nametagContract = ContractInterface.getNametagContract(web3, env);
+    var paySpecContract = ContractInterface.getPaySpecContract(web3, env);
+
+    //web3.eth.defaultAccount = web3.eth.accounts[0]
+    //personal.unlockAccount(web3.eth.defaultAccount)
+
+
+    // await web3.eth.enable();
 
     var response = await new Promise(function (result, error) {
-      nametagContract.claimToken.sendTransaction(connectedAddress, name, function (err, res) {
+      paySpecContract.createInvoice.sendTransaction(newInvoiceData.description, newInvoiceData.nonce, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress, newInvoiceData.blockExpiresAt, function (err, res) {
+        if (err) {
+          return error(err);
+        }
+
+        result(res);
+      });
+    });
+  }
+
+  async payInvoice(invoiceUUID) {
+
+    console.log('pay invoice ', invoiceUUID);
+
+    var web3 = ethereumHelper.getWeb3Instance();
+
+    var env = ethereumHelper.getEnvironmentName();
+
+    console.log('env ', env);
+
+    var connectedAddress = ethereumHelper.getConnectedAccountAddress();
+
+    var paySpecContract = ContractInterface.getPaySpecContract(web3, env);
+
+    //web3.eth.defaultAccount = web3.eth.accounts[0]
+    //personal.unlockAccount(web3.eth.defaultAccount)
+
+
+    // await web3.eth.enable();
+
+    var response = await new Promise(function (result, error) {
+      paySpecContract.payInvoice.sendTransaction(invoiceUUID, function (err, res) {
         if (err) {
           return error(err);
         }
@@ -55112,6 +55182,7 @@ class EthHelper {
         errorMessage: null,
         connected: false,
         networkMode: 'Mainnet',
+        chainId: 0,
         web3address: null,
         etherscanURL: null,
         paySpecAddress: null,
@@ -55187,6 +55258,17 @@ class EthHelper {
     return this.getWeb3Instance().eth.accounts[0];
   }
 
+  getEnvironmentName() {
+
+    // return ethContainer.networkMode;
+
+    if (ethContainer.chainId == '0x3') {
+      return 'development';
+    }
+
+    return 'production';
+  }
+
   async getCurrentEthBlockNumber() {
 
     if (typeof this.getWeb3Instance() == 'undefined') {
@@ -55216,6 +55298,8 @@ class EthHelper {
     this.web3 = web3;
 
     var chainId = web3.currentProvider.chainId;
+
+    await __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(ethContainer, "chainId", chainId);
 
     var env = 'mainnet';
     if (chainId == '0x3') {
