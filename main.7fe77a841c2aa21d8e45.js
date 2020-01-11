@@ -56659,6 +56659,7 @@ class InvoiceRenderer {
       });
     });
 
+    console.log('invoice exists??');
     __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(invoiceData, 'invoiceExists', invoiceExists);
 
     let amountDue = await new Promise(resolve => {
