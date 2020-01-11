@@ -23,64 +23,16 @@
 
 
 
-  <body id ="home">
+  <body id ="invoice">
     <!-- header -->
     <div class="hero-head">
       <section class="hero is-primary is-medium" id="contact">
 	<div class="hero-body">
-	  <div class="container">
-	    <div class="header-titles">
-        <img src='/app/assets/img/senderclogo.png' />
-          <!--
-	      <h3 class="title is-3 is-spaced">Nametag Token</h3>
-	      <h5 class="subtitle is-5 is-spaced">Your crypto handle.</h5>
-          -->
-      </div>
 
-
-      <div class="row">
-        <div class="is-size-4 font-raleway" style="margin-left:2em;"> SendERC - Token Payments </div>
-      </div>
-
-	    <div class="header-buttons pull-right">
-
-        <span class="control ">
-          <a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
-            <span class="icon">
-              <i class="fab fa-github"></i>
-            </span>
-            <span>Github</span>
-          </a>
-        </span>
-
-	      <span class="control ">
-      		<a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
-      		  <span class="icon">
-      		    <i class="fab fa-ethereum"></i>
-      		  </span>
-      		  <span>PaySpec API</span>
-      		</a>
-	      </span>
-
-
-
-	    </div>
-	  </div>
-	</div>
-      </section>
-    </div>
-    <!-- end of header -->
-
-    <!-- example content block -->
-    <div class="content-block">
-      <section class="hero">
-	<div class="hero-body">
-	  <div class="container">
+    <div class="container">
 
 
       <div id="eth-container" class="eth-container box" v-cloak    >
-
-
 
 
         <div class="columns">
@@ -125,20 +77,130 @@
       </div>
 
 
+    </div> <!-- container-->
+
+    <div class="whitespace-md"></div>
+
+	  <div class="container">
+
+      <div class="columns">
+        <div class="column">
+
+          <h2> Invoice QR Code (EIP 681) </h2>
+          <canvas id='qr-code-canvas' height='512' width='512'>
+
+          </canvas>
+
+        </div>
+
+        <div class="column">
+          <div class="container" id='invoice-data' v-cloak>
+
+            <div class="table-container">
+
+              <h2> Invoice Data </h2>
+              <table class="table is-bordered">
+                <thead>
+
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>UUID </td>
+                    <td>{{ invoiceUUID }}</td>
+                  </tr>
+                  <tr>
+                    <td>Description </td>
+                    <td>{{ description }}</td>
+                  </tr>
+                  <tr>
+                    <td>Reference Number </td>
+                    <td>{{ referenceNumber }}</td>
+                  </tr>
+                  <tr>
+                    <td>Recipient Address </td>
+                    <td>{{ recipientAddress }}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Token Address </td>
+                    <td>{{ tokenAddress }}</td>
+                  </tr>
+                  <tr>
+                    <td>Token Amount Due</td>
+                    <td>{{ tokenAmount }}</td>
+                  </tr>
+                  <tr>
+                    <td>Paid?</td>
+                    <td>{{ paidStatus }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+
+          </div>
+        </div>
+      </div><!--columns-->
+      </div><!--container-->
+
+
+
+	    <div class="header-buttons pull-right">
+
+        <span class="control ">
+          <a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+            <span>Github</span>
+          </a>
+        </span>
+
+	      <span class="control ">
+      		<a class="button is-info is-size-5" target="_blank" href="https://github.com/payspec">
+      		  <span class="icon">
+      		    <i class="fab fa-ethereum"></i>
+      		  </span>
+      		  <span>PaySpec API</span>
+      		</a>
+	      </span>
+
+	    </div>
+
+
+
+	  </div> <!-- hero body -->
+
+      </section>
+    </div> <!-- hero head -->
+    <!-- end of header -->
+
+    <!-- example content block -->
+    <div class="content-block">
+      <section class="hero">
+  	<div class="hero-body">
+  	  <div class="container">
+
+
+
+
+
+
       <div class="columns">
 
-  	    <div class="content column is-6 is-offset-3">
+        <div class="content column is-6 is-offset-3">
 
 
-          <div id="create-invoice-input" class="main-text box" v-cloak    >
+          <div id="pay-invoice-input" class="main-text box" v-if="!paidStatus" v-cloak    >
 
 
           <div class="whitespace-md"></div>
 
 
-          <div class="columns">
+          <div class="columns" >
             <div class="column">
-               <h4 class=" is-size-4 is-4 is-spaced">Create an Invoice</h4>
+               <h4 class=" is-size-4 is-4 is-spaced">Pay Invoice</h4>
             </div>
             <!-- <div class="column">
               <div class="pull-right" v-if='showAvailability' v-cloak>
@@ -146,97 +208,6 @@
                 <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
               </div>
             </div> -->
-          </div>
-
-
-          <div class="field">
-            <label class="label"> Recipient Address </label>
-            <div class="control">
-              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='recipientAddress'>
-            </div>
-           </div>
-
-          <div class="field">
-            <label class="label"> Token Address </label>
-            <div class="control">
-              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAddress'>
-            </div>
-           </div>
-
-
-           <div class="field">
-             <label class="label"> Tokens Amount Due </label>
-             <div class="control">
-               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAmount'>
-             </div>
-            </div>
-
-            <div class="field">
-              <label class="label"> Description Note </label>
-              <div class="control">
-                <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='description'>
-              </div>
-             </div>
-
-             <div class="field">
-               <label class="label"> Reference Number </label>
-               <div class="control">
-                 <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='refNumber'>
-               </div>
-              </div>
-
-            <div class="pull-right">
-              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
-                <span class=" ">
-                  <i class="fab fa-ethereum" style="margin-right:1em"></i>
-                </span>
-                <span> Submit </span>
-              </div>
-            </div>
-
-
-            <div class="field" v-if='predictedUUID'>
-              <label class="label"> Output: Invoice UUID </label>
-              <div class="control">
-                <span class="tag is-success" >{{predictedUUID}}</span>
-              </div>
-             </div>
-
-             <div class="field" v-if='predictedUUID'>
-               <label class="label">   </label>
-               <div class="control">
-                <a v-bind:href="predictedInvoiceURL"> View and Pay Invoice </a>
-               </div>
-              </div>
-
-
-    	      </div>
-
-  	    </div>
-
-
-
-      </div>
-
-
-
-<!--
-      <div class="columns">
-
-        <div class="content column is-6 is-offset-3">
-
-
-          <div id="pay-invoice-input" class="main-text box" v-cloak    >
-
-
-          <div class="whitespace-md"></div>
-
-
-          <div class="columns">
-            <div class="column">
-               <h4 class=" is-size-4 is-4 is-spaced">Pay Invoice</h4>
-            </div>
-
           </div>
 
 
@@ -250,7 +221,7 @@
 
 
             <div class="pull-right">
-              <div  v-bind:disabled="!(web3connected)"   class="button is-large" v-on:click='onSubmitNewInvoice'>
+              <div   class="button is-large" v-on:click='onSubmitNewInvoice'>
                 <span class=" ">
                   <i class="fab fa-ethereum" style="margin-right:1em"></i>
                 </span>
@@ -265,7 +236,73 @@
 
 
       </div>
--->
+
+
+
+
+      <div class="columns">
+
+        <div class="content column is-6 is-offset-3">
+
+
+          <div id="approve-tokens-input" class="main-text box"  v-if="!paidStatus" v-cloak    >
+
+
+          <div class="whitespace-md"></div>
+
+
+          <div class="columns">
+            <div class="column">
+               <h4 class=" is-size-4 is-4 is-spaced">ApproveTokens</h4>
+            </div>
+            <!-- <div class="column">
+              <div class="pull-right" v-if='showAvailability' v-cloak>
+                <span class="tag is-success" v-if='nametagAvailable'>Available</span>
+                <span class="tag is-danger" v-if='!nametagAvailable'>Not Available</span>
+              </div>
+            </div> -->
+          </div>
+
+
+          <div class="field">
+            <label class="label"> Contract Address </label>
+            <div class="control">
+              <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='contractAddress'>
+            </div>
+           </div>
+
+           <div class="field">
+             <label class="label"> Token Address </label>
+             <div class="control">
+               <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='tokenAddress'>
+             </div>
+            </div>
+
+            <div class="field">
+              <label class="label"> Amount </label>
+              <div class="control">
+                <input class="input is-large   " type="text" placeholder=" "  v-on:change="inputChange" v-on:keyup="keyUp" v-model='amount'>
+              </div>
+             </div>
+
+
+
+            <div class="pull-right">
+              <div   class="button is-large" v-on:click='onSubmit'>
+                <span class=" ">
+                  <i class="fab fa-ethereum" style="margin-right:1em"></i>
+                </span>
+                <span> Submit </span>
+              </div>
+            </div>
+
+
+            </div>
+
+        </div>
+
+
+      </div>
 
 
 
@@ -273,6 +310,7 @@
 	</div>
       </section>
       <hr/>
+
     </div>
     <!-- end of example block -->
 
