@@ -34161,7 +34161,7 @@ class HomeRenderer {
     // await web3.eth.enable();
 
     var response = await new Promise(function (result, error) {
-      paySpecContract.createInvoice.sendTransaction(newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress, newInvoiceData.blockExpiresAt, function (err, res) {
+      paySpecContract.createInvoice.sendTransaction(newInvoiceData.refNumber, newInvoiceData.description, newInvoiceData.tokenAddress, newInvoiceData.tokenAmount, newInvoiceData.recipientAddress, newInvoiceData.ethBlockExpiresAt, function (err, res) {
         if (err) {
           return error(err);
         }
