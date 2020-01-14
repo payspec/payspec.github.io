@@ -56145,7 +56145,7 @@ module.exports = {"genesisGasLimit":{"v":5000,"d":"Gas limit of the Genesis bloc
 /* 260 */
 /***/ (function(module, exports) {
 
-module.exports = {"networks":{"mainnet":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},"payspec":{"name":"PaySpec","blockchain_address":"0x92da30c9f8c72baa6e52aaf6f49feba55614998c"}}},"staging":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},"payspec":{"name":"PaySpec","blockchain_address":"0xc0d3310f26bb8a00a960f0db3b34006342eb4b6a"}}},"testnet":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},"payspec":{"name":"PaySpec","blockchain_address":"0xc0d3310f26bb8a00a960f0db3b34006342eb4b6a"}}}}}
+module.exports = {"networks":{"mainnet":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},"payspec":{"name":"PaySpec","blockchain_address":"0x22b01e79bb5910d3dde8235d2425190df1f07481"}}},"staging":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},"payspec":{"name":"PaySpec","blockchain_address":"0x685d1d7c4ee6611387645cef869054cdc9fdcc03"}}},"testnet":{"contracts":{"_0xbitcointoken":{"name":"0xBitcoinToken","blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},"payspec":{"name":"PaySpec","blockchain_address":"0x685d1d7c4ee6611387645cef869054cdc9fdcc03"}}}}}
 
 /***/ }),
 /* 261 */
